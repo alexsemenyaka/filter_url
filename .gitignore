@@ -24,3 +24,4 @@ tmp/
 *.log
 requirements.txt.tmp
 requirements.in
+.coveralls.yml
