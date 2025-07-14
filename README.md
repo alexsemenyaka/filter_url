@@ -4,7 +4,7 @@ filter-url
 [![PyPI version](https://img.shields.io/pypi/v/filter-url.svg)](https://pypi.org/project/filter-url/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/filter-url.svg)](https://pypi.org/project/filter-url/)
 [![PyPI - License](https://img.shields.io/pypi/l/filter-url.svg)](https://pypi.org/project/filter-url/)
-[![Coverage Status](https://coveralls.io/repos/github/alexsemenyaka/filter-url/badge.svg?branch=main)](https://coveralls.io/github/alexsemenyaka/filter-url?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/alexsemenyaka/filter_url/badge.svg?branch=main)](https://coveralls.io/github/alexsemenyaka/filter_url?branch=main)
 [![CI/CD Status](https://github.com/alexsemenyaka/filter-url/actions/workflows/ci.yml/badge.svg)](https://github.com/alexsemenyaka/filter-url/actions/workflows/ci.yml)
 
 A simple, fast, and configurable Python utility to censor sensitive data (passwords, API keys, tokens) from URLs, making them safe for logging, monitoring, and debugging.
