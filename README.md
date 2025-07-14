@@ -93,6 +93,8 @@ This is the most powerful feature for real-world applications. The `UrlFiltering
 1. **(Preferred)** It looks for a `url` key in the `extra` dictionary of your logging call.
 2. **(Fallback)** If `fallback=True` (the default), it searches for URLs in the positional arguments of the log message.
 
+
+```python
     import logging
     import sys
     from filter_url import UrlFilteringFilter
@@ -138,6 +140,7 @@ This is the most powerful feature for real-world applications. The `UrlFiltering
     \# Case 3: No URL in the message. Nothing extra is added
 
     logger.info("Application started successfully.")
+```
 
 **Expected Output:**
 
