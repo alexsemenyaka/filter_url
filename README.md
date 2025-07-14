@@ -99,14 +99,14 @@ This is the most powerful feature for real-world applications. The `UrlFiltering
     import sys
     from filter_url import UrlFilteringFilter
 
-    \# 1. Configure a logger
+    # 1. Configure a logger
 
     logger = logging.getLogger('my_app')
     logger.setLevel(logging.INFO)
     if logger.hasHandlers():
         logger.handlers.clear()
 
-    \# 2. Simply add our filter. Let's use custom rules for this example
+    # 2. Simply add our filter. Let's use custom rules for this example
 
     custom_filter = UrlFilteringFilter(
         bad_keys={'access_token'},
@@ -114,30 +114,30 @@ This is the most powerful feature for real-world applications. The `UrlFiltering
     )
     logger.addFilter(custom_filter)
 
-    \# 3. Use a standard Formatter. No special formatter is needed
+    # 3. Use a standard Formatter. No special formatter is needed
 
     handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter('%(levelname)s: %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    \# --- Usage Examples ---
+    # --- Usage Examples ---
 
-    \# Case 1: (Preferred) Pass the URL via 'extra'
+    # Case 1: (Preferred) Pass the URL via 'extra'
 
     logger.info(
         "User login attempt failed",
         extra={'url': "<https://auth.service.com/login?access_token=12345"}>
     )
 
-    \# Case 2: (Fallback) The URL is an argument in the message string
+    # Case 2: (Fallback) The URL is an argument in the message string
 
     logger.info(
         "API call to %s resulted in a 404 error.",
         "<https://api.service.com/data/v1/user?password=abc>"
     )
 
-    \# Case 3: No URL in the message. Nothing extra is added
+    # Case 3: No URL in the message. Nothing extra is added
 
     logger.info("Application started successfully.")
 ```
