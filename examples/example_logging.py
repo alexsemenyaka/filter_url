@@ -6,7 +6,7 @@ Example of the module usage integrated with logging
 import logging
 import sys
 
-from filter_url import UrlFilteringFilter
+from filter_url import URLFilter
 
 
 def run_final_logging_example():
@@ -20,7 +20,7 @@ def run_final_logging_example():
         logger.handlers.clear()
 
     # Simply add our filter. All the magic is inside.
-    logger.addFilter(UrlFilteringFilter())
+    logger.addFilter(URLFilter())
 
     # 3. Use a standard, simple Formatter.
     handler = logging.StreamHandler(sys.stdout)

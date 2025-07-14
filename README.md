@@ -93,7 +93,7 @@ When you need to filter a large number of URLs with the same configuration, it's
 
 ### Integration with Python's `logging` Module
 
-This is the most powerful feature for real-world applications. The `UrlFilteringFilter` automatically censors URLs in your logs. The filter works in two ways:
+This is the most powerful feature for real-world applications. The `URLFilter` automatically censors URLs in your logs. The filter works in two ways:
 1. **(Preferred)** It looks for a `url` key in the `extra` dictionary of your logging call.
 2. **(Fallback)** If `fallback=True` (the default), it searches for URLs in the positional arguments of the log message.
 
@@ -101,7 +101,7 @@ This is the most powerful feature for real-world applications. The `UrlFiltering
 ```python
     import logging
     import sys
-    from filter_url import UrlFilteringFilter
+    from filter_url import URLFilter
 
     # 1. Configure a logger
 
@@ -112,7 +112,7 @@ This is the most powerful feature for real-world applications. The `UrlFiltering
 
     # 2. Simply add our filter. Let's use custom rules for this example
 
-    custom_filter = UrlFilteringFilter(
+    custom_filter = URLFilter(
         bad_keys={'access_token'},
         fallback=True # Default, but shown for clarity
     )
@@ -157,7 +157,7 @@ Corner Cases & Considerations
 
 * **Log String vs. Valid URL**: The primary goal of this library is to produce a human-readable, safe string for logging. The output string containing `[...]` in the userinfo (password) section is not a valid URL according to RFC standards and may fail if you try to parse it again with `urllib.parse`.
 * **Performance**: For filtering a large number of URLs, always instantiate the `FilterURL` class once and reuse the instance. The standalone `filter_url()` function re-compiles regexes on every call and is less performant for batch jobs.
-* **Logging Filter Precedence**: When using `UrlFilteringFilter`, providing a URL in the `extra` dictionary is always the preferred method. The `fallback` search will only trigger if a `url` key is not found in `extra`.
+* **Logging Filter Precedence**: When using `URLFilter`, providing a URL in the `extra` dictionary is always the preferred method. The `fallback` search will only trigger if a `url` key is not found in `extra`.
 
 API Reference
 -------------
@@ -165,7 +165,7 @@ API Reference
 * `filter_url(url, censored, bad_keys, bad_keys_re, bad_path_re)`: A standalone function for one-off URL censoring.
 * `FilterURL(bad_keys, bad_keys_re, bad_path_re)`: A class that holds a compiled filter configuration for efficient, repeated use.
   * `.remove_sensitive(url, censored)`: The method that performs the censoring.
-* `UrlFilteringFilter(bad_keys, bad_keys_re, bad_path_re, fallback)`: A `logging.Filter` subclass for easy integration with Python's logging module.
+* `URLFilter(bad_keys, bad_keys_re, bad_path_re, fallback)`: A `logging.Filter` subclass for easy integration with Python's logging module.
 
 License
 -------

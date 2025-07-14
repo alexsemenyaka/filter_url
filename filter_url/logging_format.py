@@ -9,7 +9,7 @@ from .filterurl import FilterURL
 
 
 # pylint: disable=R0903
-class UrlFilteringFilter(logging.Filter):
+class URLFilter(logging.Filter):
     """
     A logging filter that automatically finds, censors, and conditionally
     appends URL information to the log message itself.

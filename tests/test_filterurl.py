@@ -9,7 +9,7 @@ import pytest
 # Import all components from your module with the correct name
 from filter_url import (
     FilterURL,
-    UrlFilteringFilter,
+    URLFilter,
     filter_url,
 )
 
@@ -129,7 +129,7 @@ def test_logging_filter_with_extra(caplog):
     """
     logger = logging.getLogger("test_extra")
     logger.setLevel(logging.INFO)
-    logger.addFilter(UrlFilteringFilter())
+    logger.addFilter(URLFilter())
 
     dirty_url = "https://example.com?token=123"
     logger.info("Test message", extra={"url": dirty_url})
@@ -147,7 +147,7 @@ def test_logging_filter_fallback_enabled(caplog):
     """
     logger = logging.getLogger("test_fallback_on")
     logger.setLevel(logging.INFO)
-    logger.addFilter(UrlFilteringFilter(fallback=True))
+    logger.addFilter(URLFilter(fallback=True))
 
     dirty_url = "https://example.com?secret_key=456"
     logger.info("API call to %s", dirty_url)
@@ -165,7 +165,7 @@ def test_logging_filter_fallback_disabled(caplog):
     """
     logger = logging.getLogger("test_fallback_off")
     logger.setLevel(logging.INFO)
-    logger.addFilter(UrlFilteringFilter(fallback=False))
+    logger.addFilter(URLFilter(fallback=False))
 
     dirty_url = "https://example.com?secret_key=456"
     logger.info("API call to %s", dirty_url)
@@ -183,7 +183,7 @@ def test_logging_filter_no_url(caplog):
     """
     logger = logging.getLogger("test_no_url")
     logger.setLevel(logging.INFO)
-    logger.addFilter(UrlFilteringFilter())
+    logger.addFilter(URLFilter())
 
     logger.info("A regular log message.")
 
@@ -204,7 +204,7 @@ def test_malformed_url_handling():
 
 def test_logging_filter_init_with_instance(caplog):
     """
-    Covers passing a pre-configured FilterURL instance to UrlFilteringFilter.
+    Covers passing a pre-configured FilterURL instance to URLFilter.
     """
     # Create a custom, pre-configured instance first
     custom_rules = FilterURL(bad_keys={"special_key"})
@@ -212,7 +212,7 @@ def test_logging_filter_init_with_instance(caplog):
     # Pass this instance during the logging filter's creation
     logger = logging.getLogger("test_init_with_instance")
     logger.setLevel(logging.INFO)
-    logger.addFilter(UrlFilteringFilter(url_filter_instance=custom_rules))
+    logger.addFilter(URLFilter(url_filter_instance=custom_rules))
 
     dirty_url = "https://example.com/?special_key=123&token=abc"
     logger.info("Test with pre-configured instance: %s", dirty_url)
@@ -231,7 +231,7 @@ def test_logging_filter_fallback_mixed_args(caplog):
     """
     logger = logging.getLogger("test_mixed_args")
     logger.setLevel(logging.INFO)
-    logger.addFilter(UrlFilteringFilter(fallback=True))
+    logger.addFilter(URLFilter(fallback=True))
 
     dirty_url = "https://example.com/data?secret=xyz"
     # Log with multiple arguments of different types

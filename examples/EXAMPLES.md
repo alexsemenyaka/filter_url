@@ -55,14 +55,14 @@ When filtering a large number of URLs with the same configuration, instantiating
 
 * * *
 
-3\. Logging Integration with `UrlFilteringFilter`
+3\. Logging Integration with `URLFilter`
 -------------------------------------------------
 
-For automated censoring in application logs, the `UrlFilteringFilter` provides seamless integration with Python's standard `logging` module.
+For automated censoring in application logs, the `URLFilter` provides seamless integration with Python's standard `logging` module.
 
     import logging
     import sys
-    from filter_url import UrlFilteringFilter
+    from filter_url import URLFilter
     
     # 1. Configure a logger
     logger = logging.getLogger('my_secure_app')
@@ -71,7 +71,7 @@ For automated censoring in application logs, the `UrlFilteringFilter` provides s
         logger.handlers.clear()
     
     # 2. Add our filter. All the magic happens "under the hood".
-    logger.addFilter(UrlFilteringFilter(fallback=True))
+    logger.addFilter(URLFilter(fallback=True))
     
     # 3. Use a standard, simple formatter. No special formatter is needed.
     handler = logging.StreamHandler(sys.stdout)

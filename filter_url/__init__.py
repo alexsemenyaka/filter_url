@@ -11,7 +11,7 @@ from .filterurl import (
     FilterURL,
     filter_url,
 )
-from .logging_format import UrlFilteringFilter
+from .logging_format import URLFilter
 
 _metadata = importlib.metadata.metadata("filter_url")
 __version__ = _metadata["Version"]
@@ -22,7 +22,7 @@ __license__ = _metadata["License"]
 __all__ = [
     "FilterURL",
     "filter_url",
-    "UrlFilteringFilter",
+    "URLFilter",
     "DEFAULT_BAD_KEYS",
     "DEFAULT_BAD_KEYS_RE",
     "DEFAULT_BAD_PATH_RE",
