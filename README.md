@@ -90,7 +90,6 @@ When you need to filter a large number of URLs with the same configuration, it's
 ### Integration with Python's `logging` Module
 
 This is the most powerful feature for real-world applications. The `UrlFilteringFilter` automatically censors URLs in your logs. The filter works in two ways:
-
 1. **(Preferred)** It looks for a `url` key in the `extra` dictionary of your logging call.
 2. **(Fallback)** If `fallback=True` (the default), it searches for URLs in the positional arguments of the log message.
 
