@@ -1,7 +1,7 @@
 [project]
 name = "filter_url"
 version = "0.2.1"
-description = "A simple, fast, and configurable URL sensitve data filter"
+description = "A simple, fast, and configurable URL sensitive data filter"
 authors = [
     { name = "Alex Semenyaka", email = "alex.semenyaka@gmail.com" },
 ]
@@ -17,11 +17,17 @@ classifiers = [
     "Topic :: System :: Logging",
     "Topic :: Text Processing :: Filters",
 ]
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "coveralls",
+]
 
-#[project.urls]
-#Homepage = ""
-#Repository = ""
-#Issues = ""
+[project.urls]
+Homepage = "https://github.com/alexsemenyaka/filter_url"
+Repository = "https://github.com/alexsemenyaka/filter_url"
+Issues = "https://github.com/alexsemenyaka/filter_url/issues"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
