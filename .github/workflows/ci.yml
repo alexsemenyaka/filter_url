@@ -3,11 +3,12 @@ name: Run Tests and Report Coverage
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.10", "3.13"] # Тестируем на разных версиях Python
+        python-version: ["3.8", "3.12"]
 
     steps:
     - name: Checkout repository
@@ -21,14 +22,24 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[test]" # Устанавливаем проект и зависимости для тестов
+        pip install -e ".[test]"
 
     - name: Run tests with coverage
       run: |
         pytest --cov=filter_url --cov-report=xml
 
     - name: Upload coverage to Coveralls
-      # Ready to be used action for Coveralls
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel: true
+
+  coveralls-finish:
+    needs: test 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
