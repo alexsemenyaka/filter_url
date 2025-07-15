@@ -161,15 +161,38 @@ Corner Cases & Considerations
 
 * **Log String vs. Valid URL**: The primary goal of this library is to produce a human-readable, safe string for logging. The output string containing `[...]` in the userinfo (password) section is not a valid URL according to RFC standards and may fail if you try to parse it again with `urllib.parse`.
 * **Performance**: For filtering a large number of URLs, always instantiate the `FilterURL` class once and reuse the instance. The standalone `filter_url()` function re-compiles regexes on every call and is less performant for batch jobs.
-* **Logging Filter Precedence**: When using `URLFilter`, providing a URL in the `extra` dictionary is always the preferred method. The `fallback` search will only trigger if a `url` key is not found in `extra`.
+* **Logging Filter Precedence**: When using `URLFilter`, providing a URL in the `extra` dictionary is always the preferred method. The `fallback` search will only trigger if a `url` key is not found in `extra`. Also, using fallback option needs extra CPU cycles, which may be unwanted.
 
 API Reference
 -------------
 
 * `filter_url(url, censored, bad_keys, bad_keys_re, bad_path_re)`: A standalone function for one-off URL censoring.
-* `FilterURL(bad_keys, bad_keys_re, bad_path_re)`: A class that holds a compiled filter configuration for efficient, repeated use.
+     * **url:str              - (required)** an URL to 'censor'
+     * **censored:str         - (optional)** a placeholder to use insted aof redacted parts, '[...]' by default
+     * **bad_keys:list:       - (optional)** a list of keys in the HTTP method GET that may contain a sensitive data. Default:
+
+    [ "password", "token", "key", "secret", "auth", "apikey", "credentials", ]
+
+     * **bad_keys_re:list:     - (optional)** a list of regexs matching keys in the HTTP method GET that may contain a sensitive data. Default:
+
+    [ r"session", r"csrf", r".*_secret", r".*_token", r".*_key", ]
+
+     * **bad_path_re:str:      - (optional)** a regex to match a path port of the URL, each defined group in it will be redacted. Default: None. Examples:
+
+    custom_path_re_named = r"/api/v1/(?P<api_key>[^/]+)/resource"
+    custom_path_re_simple = r"(?<=/user/)\d+(?=/delete)"
+
+* `FilterURL(bad_keys, bad_keys_re, bad_path_re)`: A class that holds a compiled filter configuration for efficient, repeated use. Meaning of the parameters and the defaults
+                                                   are the same as for filter\_url() (see above)
   * `.remove_sensitive(url, censored)`: The method that performs the censoring.
-* `URLFilter(bad_keys, bad_keys_re, bad_path_re, fallback)`: A `logging.Filter` subclass for easy integration with Python's logging module.
+     * **censored:str         - (optional)** a placeholder to use insted aof redacted parts, '[...]' by default
+* `URLFilter(fmt, bad_keys, bad_keys_re, bad_path_re, fallback)`: A `logging.Filter` subclass for easy integration with Python's logging module.
+     * **bad_keys:list, bad_keys_re:list, bad_path_re:str** are the same as for filter\_url() (see above)
+     * **fmt:str                       - (optional)** Format to add an filtered URL into the log message, default: ' | (URL={filtered\_url})' ({filtered\_url} will be
+                                                       replaced with your filtered URL)
+     * **fallback:bool                 - (optional)** Do we look for URL in the text when URL is not specified explicitly with extra={'url':...}? Default: True
+     * **url_filter_instance:FilterURL - (optional)** Pre-configured instance of FilterURL-like class to use for filtering. Default: None (will be created by the filter)
+     * **name:str                      - (optional)** The name of the filter (inherited from the logging.Filter)
 
 License
 -------

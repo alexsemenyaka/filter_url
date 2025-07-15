@@ -22,12 +22,14 @@ class URLFilter(logging.Filter):
         bad_keys: Optional[Set[str]] = None,
         bad_keys_re: Optional[List[str]] = None,
         bad_path_re: Optional[str] = None,
+        fmt: Optional[str] = ' | (URL={filtered_url})',
         url_filter_instance: Optional[FilterURL] = None,
         fallback: bool = True,
         name: str = "",
     ):
         """Initializes the filter."""
         super().__init__(name)
+        self.fmt      = fmt
         self.fallback = fallback
         if url_filter_instance:
             self.url_filter = url_filter_instance
@@ -65,8 +67,8 @@ class URLFilter(logging.Filter):
         # AFTER arguments in record.args have been censored.
         message = record.getMessage()
 
-        if found_and_censored_url:
-            message += f" | (URL data: {found_and_censored_url})"
+        if found_and_censored_url and self.fmt:
+            message += self.fmt.format(filtered_url=found_and_censored_url)
 
         record.msg = message
         record.args = ()

@@ -20,7 +20,7 @@ def run_final_logging_example():
         logger.handlers.clear()
 
     # Simply add our filter. All the magic is inside.
-    logger.addFilter(URLFilter())
+    logger.addFilter(URLFilter(fmt='| (URL data: {filtered_url})'))
 
     # 3. Use a standard, simple Formatter.
     handler = logging.StreamHandler(sys.stdout)

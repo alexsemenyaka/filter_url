@@ -71,7 +71,7 @@ For automated censoring in application logs, the `URLFilter` provides seamless i
         logger.handlers.clear()
     
     # 2. Add our filter. All the magic happens "under the hood".
-    logger.addFilter(URLFilter(fallback=True))
+    logger.addFilter(URLFilter(fmt='| (URL data: {filtered_url})', fallback=True))
     
     # 3. Use a standard, simple formatter. No special formatter is needed.
     handler = logging.StreamHandler(sys.stdout)
