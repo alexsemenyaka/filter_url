@@ -148,16 +148,16 @@ This is the most powerful feature for real-world applications. The `URLFilter` a
     logger.info("Application started successfully.")
 ```
 
-Be aware of a minor trade-off between using a filter for the logging module and the FilterURL class.
-Provided each URL is only output once, then a filter for logging is the perfect solution: it will make your code much more straightforward and cleaner.
-When processing URLs and outputting them multiple times during different stages, prepare them in advance using the FilterURL class to save CPU cycles.
-The filtered URTs are stored in the internal cache inside FilterURL to mitigate this difference. However, it can still be notable under load.
-
 **Expected Output:**
 
     INFO: User login attempt failed | (URL data: https://auth.service.com/login?access_token=[...])
     INFO: API call to https://api.service.com/data/v1/user?password=[...] was made. | (URL data: https://api.service.com/data/v1/user?password=[...])
     INFO: Application started successfully.
+
+Be aware of a minor trade-off between using a filter for the logging module and the FilterURL class.
+Provided each URL is only output once, then a filter for logging is the perfect solution: it will make your code much more straightforward and cleaner.
+When processing URLs and outputting them multiple times during different stages, prepare them in advance using the FilterURL class to save CPU cycles.
+The filtered URTs are stored in the internal cache inside FilterURL to mitigate this difference. However, it can still be notable under load.
 
 Corner Cases & Considerations
 -----------------------------
