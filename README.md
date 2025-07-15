@@ -91,6 +91,8 @@ When you need to filter a large number of URLs with the same configuration, it's
     #   'https://service.com/api?id=3'
     # ]
 
+The class has an internal cache for filtered URLs, you can tune it or turn it off completely with the parameter cache\_size (see API description below)
+
 ### Integration with Python's `logging` Module
 
 This is the most powerful feature for real-world applications. The `URLFilter` automatically censors URLs in your logs. The filter works in two ways:
@@ -149,6 +151,7 @@ This is the most powerful feature for real-world applications. The `URLFilter` a
 Be aware of a minor trade-off between using a filter for the logging module and the FilterURL class.
 Provided each URL is only output once, then a filter for logging is the perfect solution: it will make your code much more straightforward and cleaner.
 When processing URLs and outputting them multiple times during different stages, prepare them in advance using the FilterURL class to save CPU cycles.
+The filtered URTs are stored in the internal cache inside FilterURL to mitigate this difference. However, it can still be notable under load.
 
 **Expected Output:**
 
@@ -182,16 +185,19 @@ API Reference
     custom_path_re_named = r"/api/v1/(?P<api_key>[^/]+)/resource"
     custom_path_re_simple = r"(?<=/user/)\d+(?=/delete)"
 
-* `FilterURL(bad_keys, bad_keys_re, bad_path_re)`: A class that holds a compiled filter configuration for efficient, repeated use. Meaning of the parameters and the defaults
-                                                   are the same as for filter\_url() (see above)
+* `FilterURL(bad_keys, bad_keys_re, bad_path_re, cache_size)`: A class that holds a compiled filter configuration for efficient, repeated use.
+                                                               Meaning of **bad_keys:list, bad_keys_re:list, bad_path_re:str** and their defaults are the same
+                                                               as for filter\_url() (see above)
+     * **cache_size:int       - (optional)** Size of the cache to keep filtered URLs, 0 or None means no caching. Default: 512
   * `.remove_sensitive(url, censored)`: The method that performs the censoring.
      * **censored:str         - (optional)** a placeholder to use insted aof redacted parts, '[...]' by default
-* `URLFilter(fmt, bad_keys, bad_keys_re, bad_path_re, fallback)`: A `logging.Filter` subclass for easy integration with Python's logging module.
+* `URLFilter(bad_keys, bad_keys_re, bad_path_re, fmt, url_filter_instance, fallback, cache_size, name)`: A `logging.Filter` subclass for easy integration with Python's logging module.
      * **bad_keys:list, bad_keys_re:list, bad_path_re:str** are the same as for filter\_url() (see above)
      * **fmt:str                       - (optional)** Format to add an filtered URL into the log message, default: ' | (URL={filtered\_url})' ({filtered\_url} will be
                                                        replaced with your filtered URL)
-     * **fallback:bool                 - (optional)** Do we look for URL in the text when URL is not specified explicitly with extra={'url':...}? Default: True
      * **url_filter_instance:FilterURL - (optional)** Pre-configured instance of FilterURL-like class to use for filtering. Default: None (will be created by the filter)
+     * **fallback:bool                 - (optional)** Do we look for URL in the text when URL is not specified explicitly with extra={'url':...}? Default: True
+     * **cache_size:int                - (optional)** Size of the cache to keep filtered URLs, 0 or None means no caching. Default: 512
      * **name:str                      - (optional)** The name of the filter (inherited from the logging.Filter)
 
 License

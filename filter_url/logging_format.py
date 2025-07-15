@@ -25,6 +25,7 @@ class URLFilter(logging.Filter):
         fmt: Optional[str] = ' | (URL={filtered_url})',
         url_filter_instance: Optional[FilterURL] = None,
         fallback: bool = True,
+        cache_size: Optional[int] = 512,
         name: str = "",
     ):
         """Initializes the filter."""
@@ -34,7 +35,7 @@ class URLFilter(logging.Filter):
         if url_filter_instance:
             self.url_filter = url_filter_instance
         else:
-            self.url_filter = FilterURL(bad_keys, bad_keys_re, bad_path_re)
+            self.url_filter = FilterURL(bad_keys, bad_keys_re, bad_path_re, cache_size=cache_size)
 
     def filter(self, record: logging.LogRecord) -> bool:
         """

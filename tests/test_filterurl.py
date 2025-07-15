@@ -122,6 +122,40 @@ def test_filter_url_function_and_class(
     result_class = filter_instance.remove_sensitive(input_url, censored="[...]")
     assert result_class == expected_url
 
+# pylint: disable=W0613
+@pytest.mark.parametrize("test_id,input_url,expected_url,config", URL_TEST_CASES)
+def test_cache_settings(
+    test_id: str, input_url: str, expected_url: str, config: Dict[str, Any]
+):
+    """
+    Tests the FilterURL class, the function has no cache_size parameter.
+    """
+    filter_instance = FilterURL(
+        bad_keys=config["bad_keys"],
+        bad_keys_re=config["bad_keys_re"],
+        bad_path_re=config["bad_path_re"],
+        cache_size=0,
+    )
+    result_class = filter_instance.remove_sensitive(input_url, censored="[...]")
+    assert result_class == expected_url
+
+    filter_instance = FilterURL(
+        bad_keys=config["bad_keys"],
+        bad_keys_re=config["bad_keys_re"],
+        bad_path_re=config["bad_path_re"],
+        cache_size=1,
+    )
+    result_class = filter_instance.remove_sensitive(input_url, censored="[...]")
+    assert result_class == expected_url
+
+    filter_instance = FilterURL(
+        bad_keys=config["bad_keys"],
+        bad_keys_re=config["bad_keys_re"],
+        bad_path_re=config["bad_path_re"],
+        cache_size=100000,
+    )
+    result_class = filter_instance.remove_sensitive(input_url, censored="[...]")
+    assert result_class == expected_url
 
 def test_logging_filter_with_extra(caplog):
     """

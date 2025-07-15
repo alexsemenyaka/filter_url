@@ -8,6 +8,7 @@ import re
 from re import Pattern
 from typing import List, Optional, Set
 from urllib.parse import parse_qsl, urlencode, urlparse
+from functools import lru_cache
 
 # ======================================================================
 # Default filter settings that can be imported and used
@@ -52,6 +53,7 @@ class FilterURL:
         bad_keys: Optional[Set[str]] = None,
         bad_keys_re: Optional[List[str]] = None,
         bad_path_re: Optional[str] = None,
+        cache_size: Optional[int] = 512,
     ):
         """
         Initializes the FilterURL instance.
@@ -75,9 +77,14 @@ class FilterURL:
         self.bad_path_comp: Optional[Pattern] = (
             re.compile(path_re_to_compile) if path_re_to_compile else None
         )
+        if cache_size and cache_size > 0:
+            self.remove_sensitive = lru_cache(maxsize=cache_size)(self._process_url)
+        else:
+            # Turn off caching
+            self.remove_sensitive = self._process_url
 
     # pylint: disable=too-many-locals, R0912
-    def remove_sensitive(self, url: str, censored: str = "[...]") -> str:
+    def _process_url(self, url: str, censored: str = "[...]") -> str:
         """
         Takes a URL and censors parts of it based on the filter's configuration.
 
