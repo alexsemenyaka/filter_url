@@ -146,6 +146,10 @@ This is the most powerful feature for real-world applications. The `URLFilter` a
     logger.info("Application started successfully.")
 ```
 
+Be aware of a minor trade-off between using a filter for the logging module and the FilterURL class.
+Provided each URL is only output once, then a filter for logging is the perfect solution: it will make your code much more straightforward and cleaner.
+When processing URLs and outputting them multiple times during different stages, prepare them in advance using the FilterURL class to save CPU cycles.
+
 **Expected Output:**
 
     INFO: User login attempt failed | (URL data: https://auth.service.com/login?access_token=[...])
