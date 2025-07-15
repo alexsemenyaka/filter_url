@@ -17,6 +17,7 @@ Key Features
 * **Advanced Path Filtering**: Use regex with named capture groups to censor specific dynamic parts of a URL path while leaving the rest intact.
 * **Order Preserving**: Guarantees that the order of query parameters in the output is identical to the input.
 * **Logging Integration**: Provides a ready-to-use `logging.Filter` subclass for seamless integration into your application's logging setup.
+* **Optimised**: Designed with high loads in mind.
 * **Lightweight**: Zero external dependencies.
 
 Installation
